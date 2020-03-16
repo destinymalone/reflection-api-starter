@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/reflection")
+@RequestMapping("/reflections")
 public class ReflectionController {
     @Autowired
     public ReflectionRepository reflections;

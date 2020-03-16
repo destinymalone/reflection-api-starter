@@ -15,12 +15,12 @@ public class QuestionRepository {
     public JdbcTemplate jdbc;
 
     public List<Question> all() {
-        return jdbc.query("SELECT id, prompt FROM questions", this::mapper);
+        return jdbc.query("SELECT id, prompt, reflectionId FROM questions", this::mapper);
     }
 
     public Question create(Question question) {
         return jdbc.queryForObject(
-                "INSERT INTO questions (prompt) VALUES (?) RETURNING id, prompt",
+                "INSERT INTO questions (prompt) VALUES (?) RETURNING id, prompt, reflectionId",
                 this::mapper,
                 question.prompt
         );
@@ -35,7 +35,7 @@ public class QuestionRepository {
 //    }
 
     public Question find(Integer id) {
-        return jdbc.queryForObject("SELECT id, prompt FROM questions WHERE id = ?", this::mapper, id);
+        return jdbc.queryForObject("SELECT id, prompt, reflectionId FROM questions WHERE id = ?", this::mapper, id);
     }
 
     public Question update(Question question) {
@@ -45,7 +45,7 @@ public class QuestionRepository {
     }
 
     public void delete(Integer id) {
-        jdbc.query("DELETE FROM questions WHERE id = ? RETURNING id, prompt", this::mapper, id);
+        jdbc.query("DELETE FROM questions WHERE id = ? RETURNING id, prompt, reflectionId", this::mapper, id);
     }
 
     private Question mapper(ResultSet resultSet, int i) throws SQLException {

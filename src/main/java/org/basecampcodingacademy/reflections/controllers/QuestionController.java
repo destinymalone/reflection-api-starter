@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/question")
+@RequestMapping("/reflections/{reflectionId}/question")
 public class QuestionController {
     @Autowired
     public QuestionRepository questions;
