@@ -41,5 +41,12 @@ CREATE TABLE IF NOT EXISTS group_authorities (
 
 CREATE TABLE IF NOT EXISTS reflections (
     id SERIAL PRIMARY KEY,
-    date DATE NOT NULL UNIQUE
+    date DATE NOT NULL UNIQUE,
+    questions TEXT NULL
+);
+
+CREATE TABLE IF NOT EXISTS questions (
+    id SERIAL PRIMARY KEY,
+    prompt TEXT NOT NULL,
+    reflectionId INTEGER REFERENCES reflections(id)
 );
