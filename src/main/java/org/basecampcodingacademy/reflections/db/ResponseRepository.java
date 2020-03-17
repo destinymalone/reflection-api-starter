@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -18,46 +17,46 @@ public class ResponseRepository {
     public JdbcTemplate jdbc;
 
     public List<Response> all() {
-        return jdbc.query("SELECT id, answers FROM reflections", this::mapper);
+        return jdbc.query("SELECT id, reflectionId, userUsername FROM responses", this::mapper);
     }
 
-    public Response create(Response reflection) {
+    public Response create(Response response) {
         return jdbc.queryForObject(
-                "INSERT INTO reflections (answers) VALUES (?) RETURNING id, reflectionId, username, answers",
+                "INSERT INTO responses (userUsername, reflectionId) VALUES (?, ?) RETURNING id, reflectionId, userUsername",
                 this::mapper,
-                reflection.answers
+                response.reflectionId,
+                response.userUsername
         );
     }
 
-//    public Response find(LocalDate localDate) {
-//        try {
-//            return jdbc.queryForObject("SELECT id, answers FROM reflections WHERE answers = ? LIMIT 1", this::mapper, localDate);
-//        } catch (EmptyResultDataAccessException ex) {
-//            return null;
-//        }
-//    }
-
-    public Response find(Integer id) {
-        return jdbc.queryForObject("SELECT id, reflectionId, username, answers FROM reflections WHERE id = ?", this::mapper, id);
+    public Response find() {
+        try {
+            return jdbc.queryForObject("SELECT id, reflectionId FROM responses WHERE reflectionId = ? LIMIT 1", this::mapper);
+        } catch (EmptyResultDataAccessException ex) {
+            return null;
+        }
     }
 
-    public Response update(Response reflection) {
+    public Response find(Integer id) {
+        return jdbc.queryForObject("SELECT id, reflectionId, userUsername FROM responses WHERE id = ?", this::mapper, id);
+    }
+
+    public Response update(Response response) {
         return jdbc.queryForObject(
-                "UPDATE reflections SET answers = ? WHERE id = ? AND reflectionId = ? AND username = ? RETURNING id, reflectionId, username, answers",
-                this::mapper, reflection.answers, reflection.id);
+                "UPDATE responses SET userUsername = ? WHERE id = ? RETURNING id, reflectionId",
+                this::mapper, response.reflectionId, response.id);
     }
 
     public void delete(Integer id) {
-        jdbc.query("DELETE FROM reflections WHERE id = ? RETURNING id, reflectionId, username, answers", this::mapper, id);
+        jdbc.query("DELETE FROM responses WHERE id = ? RETURNING id, reflectionId", this::mapper, id);
     }
 
     private Response mapper(ResultSet resultSet, int i) throws SQLException {
         return new Response(
                 resultSet.getInt("id"),
                 resultSet.getInt("reflectionId"),
-                resultSet.getString("answers"),
-                Collections.singletonList(resultSet.getString("username"))
-
+                resultSet.getString("userUsername"),
+                null
         );
     }
 }
