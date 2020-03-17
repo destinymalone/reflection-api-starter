@@ -20,7 +20,8 @@ public class QuestionController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Question create(@RequestBody Question question) {
+    public Question create(@RequestBody Question question, @PathVariable Integer reflectionId) {
+        question.reflectionId = reflectionId;
         return questions.create(question);
     }
 
@@ -31,8 +32,9 @@ public class QuestionController {
 //    }
 
     @PatchMapping("/{id}")
-    public Question update(@PathVariable Integer id, @RequestBody Question question) {
+    public Question update(@PathVariable Integer reflectionId,@PathVariable Integer id, @RequestBody Question question) {
         question.id = id;
+        question.reflectionId = reflectionId;
         return questions.update(question);
     }
 

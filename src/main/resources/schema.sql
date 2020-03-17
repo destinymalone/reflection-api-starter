@@ -50,3 +50,10 @@ CREATE TABLE IF NOT EXISTS questions (
     prompt TEXT NOT NULL,
     reflectionId INTEGER REFERENCES reflections(id)
 );
+
+CREATE TABLE IF NOT EXISTS responses (
+    id SERIAL PRIMARY KEY UNIQUE,
+    reflectionId INTEGER REFERENCES reflections(id),
+    username TEXT NOT NULL,
+    answers TEXT NOT NULL
+);

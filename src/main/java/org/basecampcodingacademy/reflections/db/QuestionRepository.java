@@ -20,9 +20,10 @@ public class QuestionRepository {
 
     public Question create(Question question) {
         return jdbc.queryForObject(
-                "INSERT INTO questions (prompt) VALUES (?) RETURNING id, prompt, reflectionId",
+                "INSERT INTO questions (prompt, reflectionId) VALUES (?, ?) RETURNING id, prompt, reflectionId",
                 this::mapper,
-                question.prompt
+                question.prompt,
+                question.reflectionId
         );
     }
 
@@ -40,8 +41,8 @@ public class QuestionRepository {
 
     public Question update(Question question) {
         return jdbc.queryForObject(
-                "UPDATE questions SET prompt = ? WHERE id = ? RETURNING id, prompt",
-                this::mapper, question.prompt, question.id);
+                "UPDATE questions SET prompt = ? WHERE id = ? AND reflectionId = ? RETURNING id, prompt, reflectionId",
+                this::mapper, question.prompt, question.id, question.reflectionId);
     }
 
     public void delete(Integer id) {
