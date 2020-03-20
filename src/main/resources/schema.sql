@@ -57,3 +57,10 @@ CREATE TABLE IF NOT EXISTS responses (
     userUsername TEXT NOT NULL,
     answers TEXT NULL
 );
+
+CREATE TABLE IF NOT EXISTS answers (
+    id SERIAL PRIMARY KEY UNIQUE,
+    responseId INTEGER REFERENCES responses(id),
+    questionId INTEGER REFERENCES questions(id),
+    content TEXT NOT NULL
+);

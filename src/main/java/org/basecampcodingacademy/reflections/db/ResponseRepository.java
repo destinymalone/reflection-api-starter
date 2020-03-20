@@ -22,10 +22,11 @@ public class ResponseRepository {
 
     public Response create(Response response) {
         return jdbc.queryForObject(
-                "INSERT INTO responses (userUsername, reflectionId) VALUES (?, ?) RETURNING id, reflectionId, userUsername",
+                "INSERT INTO responses (userUsername, reflectionId) VALUES (?, ?) RETURNING id, userUsername, reflectionId",
                 this::mapper,
-                response.reflectionId,
-                response.userUsername
+                response.userUsername,
+                response.reflectionId
+
         );
     }
 
