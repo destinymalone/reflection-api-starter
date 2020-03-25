@@ -1,15 +1,19 @@
-package org.basecampcodingacademy.reflections.controllers;
+package org.basecampcodingacademy.responses.controllers;
 
 import org.basecampcodingacademy.reflections.db.ResponseRepository;
 import org.basecampcodingacademy.reflections.domain.Response;
+import org.basecampcodingacademy.reflections.exceptions.ResponseForExistingReflection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @RestController
-@RequestMapping("/reflections/{reflectionId}/responses")
+@RequestMapping("/reflections/4/responses")
 public class ResponseController {
     @Autowired
     public ResponseRepository responses;
@@ -21,9 +25,11 @@ public class ResponseController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Response create(@RequestBody Response response, @PathVariable Integer reflectionId) {
-        response.reflectionId = reflectionId;
-        return responses.create(response);
+    public Response create(@RequestBody Response response, @PathVariable Integer reflectionId) throws ResponseForExistingReflection {
+        if (!Objects.isNull(responses.find(response.reflectionId))) {
+            return responses.create(response);
+        }
+        throw new ResponseForExistingReflection(response.reflectionId);
     }
 
 //    @GetMapping("/today")
@@ -43,5 +49,13 @@ public class ResponseController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Integer id) {
         responses.delete(id);
+    }
+
+    @ExceptionHandler ({ ResponseForExistingReflection.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleResponseForExistingReflectionException(ResponseForExistingReflection ex) {
+        var errorMap = new HashMap<String, String>();
+        errorMap.put("error", "Reflection " + ex.reflectionId.toString() + " does not exist");
+        return errorMap;
     }
 }

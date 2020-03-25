@@ -1,5 +1,6 @@
 package org.basecampcodingacademy.reflections.controllers;
 
+import org.apache.tomcat.jni.Local;
 import org.basecampcodingacademy.reflections.db.QuestionRepository;
 import org.basecampcodingacademy.reflections.db.ReflectionRepository;
 import org.basecampcodingacademy.reflections.domain.Reflection;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/reflections")
@@ -30,25 +32,11 @@ public class ReflectionController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Reflection create(@RequestBody Reflection reflection) throws OneReflectionPerDay {
-        if (reflection_exists(reflection)) {
-            throw new OneReflectionPerDay(reflection.date);
+        if (Objects.isNull(reflections.find(reflection.date))) {
+            return reflections.create(reflection);
         }
-        return reflections.create(reflection);
+        throw new OneReflectionPerDay(reflection.date);
     }
-
-    public boolean reflection_exists(Reflection reflection) throws OneReflectionPerDay {
-        if (reflection.date == reflection.date) {
-            return true;
-        } else {
-//            System.out.println("Something didn't work");
-            return false;
-        }
-    }
-//    @GetMapping
-//    public static boolean reflection_exists(Reflection reflection, LocalDate date){
-//        var reflections = Reflection(reflection, date) return Reflection reflection);
-//        return Boolean.parseBoolean(reflections);
-//    }
 
 
     @GetMapping("/today")
