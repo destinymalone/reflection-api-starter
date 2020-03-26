@@ -9,9 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
     password TEXT NOT NULL
 );
 
-INSERT INTO users (username, password)
-VALUES ('student', 'testpass'), ('student2', 'testpass')
-ON CONFLICT DO NOTHING;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS enabled BOOLEAN NOT NULL DEFAULT true;
 
 CREATE TABLE IF NOT EXISTS authorities (
     username TEXT NOT NULL REFERENCES users(username),
