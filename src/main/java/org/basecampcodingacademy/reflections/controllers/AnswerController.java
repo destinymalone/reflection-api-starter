@@ -20,6 +20,7 @@ public class AnswerController {
         return (List<Answer>) answers.find(answer);
     }
 
+
     @PostMapping("/responses/{responseId}/answers")
     @ResponseStatus(HttpStatus.CREATED)
     public Answer create(@RequestBody Answer answer, @PathVariable Integer responseId) {
@@ -31,6 +32,12 @@ public class AnswerController {
     public Answer update(@PathVariable Integer id, @RequestBody Answer answer) {
         answer.id = id;
         return answers.update(answer);
+    }
+
+    @GetMapping("/answers/{id}")
+    public Answer getOne(Answer answer, @PathVariable Integer id) {
+        answer.id = id;
+        return answers.getOne(id);
     }
 
     @DeleteMapping("/{id}")

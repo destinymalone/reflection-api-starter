@@ -1,7 +1,9 @@
 package org.basecampcodingacademy.reflections.db;
 
 import org.basecampcodingacademy.reflections.domain.Answer;
+import org.basecampcodingacademy.reflections.domain.Reflection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -29,13 +31,9 @@ public class AnswerRepository {
         );
     }
 
-//    public Answer find() {
-//        try {
-//            return jdbc.queryForObject("SELECT id, responseId FROM answers WHERE responseId = ? LIMIT 1", this::mapper);
-//        } catch (EmptyResultDataAccessException ex) {
-//            return null;
-//        }
-//    }
+    public Answer getOne(Integer id) {
+        return jdbc.queryForObject("SELECT id, questionId, responseId, content FROM answers WHERE id = ?", this::mapper, id);
+    }
 
     public List<Answer> find(Answer answer) {
         return jdbc.query("SELECT id, responseId, questionId, content FROM answers WHERE responseId = ?", this::mapper, answer.responseId);

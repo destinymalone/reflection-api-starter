@@ -1,4 +1,4 @@
-package org.basecampcodingacademy.responses.controllers;
+package org.basecampcodingacademy.reflections.controllers;
 
 import org.basecampcodingacademy.reflections.db.ResponseRepository;
 import org.basecampcodingacademy.reflections.domain.Response;
@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/reflections/4/responses")
+@RequestMapping("/reflections/{reflectionId}/responses")
 public class ResponseController {
     @Autowired
     public ResponseRepository responses;
@@ -27,6 +27,7 @@ public class ResponseController {
     @ResponseStatus(HttpStatus.CREATED)
     public Response create(@RequestBody Response response, @PathVariable Integer reflectionId) throws ResponseForExistingReflection {
         if (!Objects.isNull(responses.find(response.reflectionId))) {
+            response.reflectionId = reflectionId;
             return responses.create(response);
         }
         throw new ResponseForExistingReflection(response.reflectionId);
