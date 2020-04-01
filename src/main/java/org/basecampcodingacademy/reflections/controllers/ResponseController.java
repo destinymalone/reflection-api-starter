@@ -27,7 +27,7 @@ public class ResponseController {
     @GetMapping
     public List<Response> index(Response response, @PathVariable Integer reflectionId) {
         response.reflectionId = reflectionId;
-        return (List<Response>) responses.getOne(response);
+        return responses.getOne(response);
     }
 
 

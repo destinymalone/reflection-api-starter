@@ -1,6 +1,8 @@
 package org.basecampcodingacademy.reflections.db;
 
+import org.basecampcodingacademy.reflections.domain.Answer;
 import org.basecampcodingacademy.reflections.domain.Question;
+import org.basecampcodingacademy.reflections.domain.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -20,9 +22,13 @@ public class QuestionRepository {
 
     public List<Question> forReflection(Integer reflectionId) {
         return jdbc.query(
-                "SELECT * FROM questions WHERE reflectionId = ?", this::mapper, reflectionId
-        );
+                "SELECT * FROM questions WHERE reflectionId = ?", this::mapper, reflectionId);
     }
+
+    public List<Question> reflectionQuestion(Question reflectionId) {
+        return jdbc.query("SELECT id, prompt, reflectionId FROM questions WHERE reflectionId = ?", this::mapper, reflectionId);
+    }
+
 
     public Question create(Question question) {
         return jdbc.queryForObject(

@@ -31,7 +31,7 @@ public class AnswerRepository {
         );
     }
 
-    public Answer getOne(Integer id) {
+    public Answer singleAnswer(Integer id) {
         return jdbc.queryForObject("SELECT id, questionId, responseId, content FROM answers WHERE id = ?", this::mapper, id);
     }
 

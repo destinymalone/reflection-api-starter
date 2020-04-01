@@ -34,9 +34,9 @@ public class AnswerController {
     }
 
     @GetMapping("/answers/{id}")
-    public Answer getOne(Answer answer, @PathVariable Integer id) {
+    public Answer reflectionAnswer(Answer answer, @PathVariable Integer id) {
         answer.id = id;
-        return answers.getOne(id);
+        return answers.singleAnswer(id);
     }
 
     @DeleteMapping("/{id}")

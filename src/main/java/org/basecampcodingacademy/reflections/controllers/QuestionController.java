@@ -2,6 +2,7 @@ package org.basecampcodingacademy.reflections.controllers;
 
 import org.basecampcodingacademy.reflections.db.QuestionRepository;
 import org.basecampcodingacademy.reflections.domain.Question;
+import org.basecampcodingacademy.reflections.domain.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +15,9 @@ public class QuestionController {
     public QuestionRepository questions;
 
     @GetMapping
-    public List<Question> index() {
-        return questions.all();
+    public List<Question> index(Question question, @PathVariable Integer reflectionId) {
+        question.reflectionId = reflectionId;
+        return questions.reflectionQuestion(question);
     }
 
     @PostMapping
