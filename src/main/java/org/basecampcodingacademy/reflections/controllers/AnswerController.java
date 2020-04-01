@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-//  @RequestMapping(...) was taken out in substitute for @PostMapping(...)
 public class AnswerController {
     @Autowired
     public AnswerRepository answers;

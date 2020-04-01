@@ -25,11 +25,6 @@ public class QuestionController {
         return questions.create(question);
     }
 
-//    @GetMapping("/today")
-//    public Question today() {
-//        var question =  questions;
-//        return question;
-//    }
 
     @PatchMapping("/{id}")
     public Question update(@PathVariable Integer reflectionId,@PathVariable Integer id, @RequestBody Question question) {

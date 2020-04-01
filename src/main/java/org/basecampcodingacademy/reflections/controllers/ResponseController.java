@@ -41,12 +41,6 @@ public class ResponseController {
         throw new ResponseForNonExistingReflection(response.reflectionId);
     }
 
-//    @GetMapping("/today")
-//    public Response today() {
-//        var response =  responses;
-//        return response;
-//    }
-
     @PatchMapping("/{id}")
     public Response update(@PathVariable Integer reflectionId,@PathVariable Integer id, @RequestBody Response response) {
         response.id = id;

@@ -33,13 +33,6 @@ public class QuestionRepository {
         );
     }
 
-//    public Question find() {
-//        try {
-//            return jdbc.queryForObject("SELECT id, prompt FROM questions WHERE prompt = ? LIMIT 1", this::mapper);
-//        } catch (EmptyResultDataAccessException ex) {
-//            return null;
-//        }
-//    }
 
     public Question find(Integer id) {
         return jdbc.queryForObject("SELECT id, prompt, reflectionId FROM questions WHERE id = ?", this::mapper, id);
